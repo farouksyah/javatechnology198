@@ -19,5 +19,8 @@ public class BarangService {
 	public List<Barang> listall(){
 		return brng.findAll();
 	}
+	public void save(Barang barang) {
+		//brng.save(brng);
+	}
 	
 }
