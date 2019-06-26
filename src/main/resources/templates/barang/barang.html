@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Insert title here</title>
+<link rel="stylesheet" href="../styles/css/bootstrap.min.css" />
+<script type="text/javascript" src="../scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../styles/js/bootstrap.min.js"></script>
+</head>
+<body>
+	Halaman Barang
+	<br>
+	<butto class="btn btn-success" id="idBtnNewBarang" >Create New</butto>
+	<br>
+	<!-- tempat untuk jahit table -->
+	<div id="idDivTableBarang">
+	
+	</div>
+
+<!-- Tempat modal dibody sebelum script -->
+<div id="idMdlNewBarang" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body" id="idMdlBodyNewBarang">
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			/* var ascii = 3;
+			console.log(ascii);
+			ascii = "fullan";
+			console.log(ascii);
+			
+			
+			
+			console.log("Mutable");
+			let letting = 3;
+			console.log(letting);
+			letting = "fullan";
+			console.log(letting);
+			
+			console.log("Immutable");
+			const constanta = 3;
+			console.log(constanta);
+			constanta = "fullan";
+			console.log(constanta);
+			 */
+			$.ajax({
+				url:'./listbarang',
+				method:'Get',
+				success:function(model){
+					
+					$('#idDivTableBarang').html(model);
+				},
+				error:function(model){
+				}
+			});
+			
+			$('#idBtnNewBarang').click(function(){
+				//$('#idMdlNewBarang').modal('show');
+				
+				/* panggil url tambah barang menggunakan ajax*/
+				$.ajax({
+					url:'./newbarang',
+					method:'Get',
+					success: function(model){
+						debugger;
+						/* jahit model return dari controller ke body modal */
+						$('#idMdlBodyNewBarang').html(model);
+						/* pop up modalnya */
+						$('#idMdlNewBarang').modal('show');
+					},
+					error: function(model){
+						debugger;
+					}
+				});
+				
+			});
+			
+		});
+	</script>
+</body>
+</html>
