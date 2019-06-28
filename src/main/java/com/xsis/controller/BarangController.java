@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.xsis.service.BarangService;
@@ -51,14 +52,41 @@ public class BarangController {
 	
 	@ResponseBody
 	@RequestMapping(value="/savebarang",method=RequestMethod.POST)
-	public Map<String,String> savebarang(@ModelAttribute("barangs") Barang barangs,Model model) {
+	public Map<String,String> savebarang(@ModelAttribute("barangs") Barang barangs, Model model) {
 		
 		System.out.println(barangs);
 		//brngsr.save(barangs);
 		
 		Map<String,String>  map= new HashMap<>();
 		
+		if (brngsr.simpan(barangs)) {
+			map.put("status", "berhasil");
+		} else {
+			map.put("status", "gagal");
+		}
+		
+		
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/deletebarang/{angka}",method=RequestMethod.DELETE)
+	public Map<String,String> savebarang(@PathVariable("angka") Long angka, Model model) {
+		
+		System.out.println(angka);
+		//brngsr.save(barangs);
+		
+		Map<String,String>  map= new HashMap<>();
 		map.put("status", "berhasil");
+		/*
+		if (brngsr.simpan(barangs)) {
+			map.put("status", "berhasil");
+		} else {
+			map.put("status", "gagal");
+		}
+		*/
+		
 		
 		return map;
 	}

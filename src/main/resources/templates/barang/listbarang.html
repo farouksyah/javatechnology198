@@ -19,12 +19,47 @@
 			</thead>
 			<tbody	id="idTblBarang">
 				<tr th:each="item : ${keybarang}">
+								<td th:text="${item.id}">NamaBarang</td>
 								<td th:text="${item.namaBarang}">NamaBarang</td>
+								<td th:text="${item.kotaPembuat}">NamaBarang</td>
+								<td th:text="${item.hargaBarang}">NamaBarang</td>
+								<td>
+									<button class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
+									<button class="btn btn-success clBtnEditBarang" th:data-idbarang="${item.id}" th:data-nmbarang="${item.namaBarang}" th:data-jnsbarang="${item.jenisBarang}" th:data-ktpembuat="${item.kotaPembuat}" th:data-jmlbarang="${item.jmlBarang}" th:data-hrgbarang="${item.hargaBarang}"><span class="glyphicon glyphicon-pencil"></span></button>
+									<button class="btn btn-danger clBtnDeleteBarang" th:data-idbarang="${item.id}"><span class="glyphicon glyphicon-trash"></span></button>
+									
+								</td>
 				</tr>				
 			
 			</tbody>
 		</table>
 	</div>
+	
+	<script type="text/javascript">
+		$('.clBtnEditBarang').click(function(){
+			$('#editidbarang').val($(this).attr('data-idbarang'));
+			$('#editnamabarang').val($(this).attr('data-nmbarang'));
+			$('#idMdlEditBarang').modal('show'); 
+		});
+		
+		$('.clBtnEditBarang').click(function(){
+			$(this).attr('data-idbarang');
+			var angka = 3;
+			$.ajax({
+				url:'./deletebarang/'+ angka,
+				type: 'DELETE',
+				success: function(){
+					debugger;
+				},
+				error: function(){
+					debugger;
+				}
+			});
+			
+		});
+		
+	
+	</script>
 
 </body>
 </html>

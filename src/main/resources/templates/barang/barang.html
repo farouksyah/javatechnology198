@@ -11,28 +11,95 @@
 <body>
 	Halaman Barang
 	<br>
-	<button type="button" class="btn btn-success" id="idBtnNewBarang" >Create New</button>
+	<button type="button" class="btn btn-success" id="idBtnNewBarang">Create
+		New</button>
 	<br>
 	<!-- tempat untuk jahit table -->
-	<div id="idDivTableBarang">
-	
+	<div id="idDivTableBarang"></div>
+
+	<!-- Tempat modal dibody sebelum script -->
+	<div id="idMdlNewBarang" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body" id="idMdlBodyNewBarang"></div>
+
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
 	</div>
+	<!-- /.modal -->
 
-<!-- Tempat modal dibody sebelum script -->
-<div id="idMdlNewBarang" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body" id="idMdlBodyNewBarang">
-      </div>
 
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+	<!-- Tempat modal dibody sebelum script -->
+	<div id="idMdlEditBarang" class="modal fade" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body" id="idMdlBodyEditBarang"></div>
+				<form class="form-horizontal" action="/editbarang"
+					id="idFrmEditBarang" th:object="${barangs}" method="put">
+					<div class="form-group">
+						<label for="namabarang" class="col-sm-2 control-label">Nama
+							barang</label>
+						<div class="col-sm-10">
+						<input type= "hidden" class="form-control" id="editidbarang"
+								name="idBarang" placeholder="id Barang">
+							<input type="text" class="form-control" id="editnamabarang"
+								name="namaBarang" placeholder="Nama Barang">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="jenisbarang" class="col-sm-2 control-label">Jenis
+							Barang</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="editjenisbarang"
+								name="jenisBarang" placeholder="Jenis Barang">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="kotapembuat" class="col-sm-2 control-label">Kota
+							Pembuat</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="editkotapembuat"
+								name="kotaPembuat" placeholder="Kota Pembuat">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="jmlbarang" class="col-sm-2 control-label">Jumlah
+							Barang</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="editjmlbarang"
+								name="jmlBarang" placeholder="Jumlah Barang">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hargabarang" class="col-sm-2 control-label">Harga
+							Barang</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="edithargabarang"
+								name="hargaBarang" placeholder="Harga Barang">
+						</div>
+					</div>
 
-	
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="button" class="btn btn-default"
+								id="idBtnSaveBarang">Submit</button>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+
 			/* var ascii = 3;
 			console.log(ascii);
 			ascii = "fullan";
@@ -53,37 +120,37 @@
 			console.log(constanta);
 			 */
 			$.ajax({
-				url:'./listbarang',
-				method:'Get',
-				success:function(model){
-					
+				url : './listbarang',
+				method : 'Get',
+				success : function(model) {
+
 					$('#idDivTableBarang').html(model);
 				},
-				error:function(model){
+				error : function(model) {
 				}
 			});
-			
-			$('#idBtnNewBarang').click(function(){
+
+			$('#idBtnNewBarang').click(function() {
 				//$('#idMdlNewBarang').modal('show');
-				
+
 				/* panggil url tambah barang menggunakan ajax*/
 				$.ajax({
-					url:'./newbarang',
-					method:'Get',
-					success: function(model){
+					url : './newbarang',
+					method : 'Get',
+					success : function(model) {
 						debugger;
 						/* jahit model return dari controller ke body modal */
 						$('#idMdlBodyNewBarang').html(model);
 						/* pop up modalnya */
 						$('#idMdlNewBarang').modal('show');
 					},
-					error: function(model){
+					error : function(model) {
 						debugger;
 					}
 				});
-				
+
 			});
-			
+
 		});
 	</script>
 </body>

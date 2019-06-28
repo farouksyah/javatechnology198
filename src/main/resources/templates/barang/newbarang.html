@@ -46,7 +46,7 @@
 </form>
 
 <script type="text/javascript">
-	$('#idFrmAddBarang').submit(function(){
+	$('#idBtnSaveBarang').click(function(){
 		debugger;
 		var vDatabarang = $('#idFrmAddBarang').serialize();
 		alert(vDatabarang);
@@ -67,6 +67,7 @@
 					
 				}else{
 					alert("Data salah");
+					$('#idMdlNewBarang').modal('hide');
 				}
 			},
 			error: function(model){
