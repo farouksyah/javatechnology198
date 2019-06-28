@@ -75,7 +75,7 @@ public class BarangController {
 	public Map<String,String> savebarang(@PathVariable("angka") Long angka, Model model) {
 		
 		System.out.println(angka);
-		//brngsr.save(barangs);
+		brngsr.hapus(angka);
 		
 		Map<String,String>  map= new HashMap<>();
 		map.put("status", "berhasil");
