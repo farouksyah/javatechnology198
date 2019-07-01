@@ -44,15 +44,5 @@ public class BarangService {
 		
 	}
 	
-	/*public boolean hapusById(int id) {
-		try {
-			brng.hapusBarangById(id);
-			return true;
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
-			return false;
-		}
-		
-	}*/
+	
 }
