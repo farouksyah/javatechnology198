@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +28,24 @@ public class BarangController {
 	private BarangService brngsr;
 	
 	@RequestMapping(value="/barang",method=RequestMethod.GET)
-	public String barang() {
+	public String barang(HttpSession httpSession ,HttpServletRequest request, Model model) {
+
+		// Print session yang telah di register
+		// menggunakan HttpSession
+		// cetak dengan mengambil keynya "Username"
+		System.out.println(httpSession.getAttribute("Username"));
+		
+		// menggunakan HttpServletRequest
+		// cetak dengan mengambil key nya "Kota"		
+		System.out.println(request.getSession().getAttribute("Kota"));
+		
+		// Untuk membawa value ke Html
+		// menggunakan model dan addAttribute
+		// Key = "Kota"
+		// Value = diambil dari session yang telah di register dari HomeController
+		model.addAttribute("Kota",request.getSession().getAttribute("Kota"));
+		
+		
 		return ("barang/barang");
 	}
 	

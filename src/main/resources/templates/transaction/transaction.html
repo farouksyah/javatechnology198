@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../styles/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Content/jquery-ui.min.css">
+    <script src="../scripts/jquery-3.4.1.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
+    <script src="../scripts/jquery.mask.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form id="idFrmTransaction">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <label for="idInpNoFaktur">No Faktur</label>
+                            </td>
+                            <td>
+                                <input type="text" name="nofaktur" class="form-control" id="idInpNoFaktur" placeholder="No Faktur">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="idInpTglPenjualan">Tanggal Penjualan</label>
+                            </td>
+                            <td>
+                                <input type="text" name="tglpenjualan" class="form-control" id="idInpTglPenjualan" placeholder="Tanggla Penjualan">
+                            </td>
+                        </tr>
+                        <tr>
+    
+                            <td colspan="2">
+                                <input type="text" class="form-control" id="idInpPencarianBarang" placeholder="Cari">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Nama</td>
+                                <td>Harga</td>
+                                <td>Aksi</td>
+                            </tr>
+                        </thead>
+                        <tbody id="idTblBodyBarang"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="table-responsive">
+                    <table class="table" id="idTbl">
+                        <thead>
+                            <tr>
+                                <td>Nama</td>
+                                <td>Jumlah</td>
+                                <td>Sub Total</td>
+                                <td>Aksi</td>
+    
+                            </tr>
+                        </thead>
+                        <tbody id="idTblBodyTransaction"></tbody>
+                    </table>
+                </div>
+                <br />
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-4">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <input type="text" name="total" class="form-control" id="idInpTotalHarga" placeholder="Total Harga">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" class="form-control" id="idInpBayar" placeholder="Bayar">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" name="returncash" class="form-control" id="idInpSisa" placeholder="Sisa">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="col-md-3 col-md-offset-8">
+                                            <button type="button" class="btn btn-success" id="idBtnSubmitTransaction">Submit</button>
+    
+                                        </div>
+                                    </td>
+                                </tr>
+    
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    
+    <script>
+        var vDataBarang = [
+              { 'ID': 1, 'TokoID': 1, 'KodeBarang': 'KB001', 'NamaBarang': 'Panadol', 'AsalPabrik': 'Bogor', 'harga': 3000, 'JmlBarang': 30, 'LamaKadaluarsa': 10 }
+            , { 'ID': 2, 'TokoID': 1, 'KodeBarang': 'KB002', 'NamaBarang': 'Dekolgen', 'AsalPabrik': 'Bandung', 'harga': 2500, 'JmlBarang': 5, 'LamaKadaluarsa': 40 }
+            , { 'ID': 3, 'TokoID': 1, 'KodeBarang': 'KB003', 'NamaBarang': 'Promag', 'AsalPabrik': 'Jakarta', 'harga': 2000, 'JmlBarang': 12, 'LamaKadaluarsa': 15 }
+            , { 'ID': 4, 'TokoID': 2, 'KodeBarang': 'KB004', 'NamaBarang': 'Vit_C', 'AsalPabrik': 'Yogya', 'harga': 500, 'JmlBarang': 23, 'LamaKadaluarsa': 20 }
+        ];
+        
+        $(document).ready(function () {
+            var vStrHtml = '';
+            var vCtr = 0;
+            var vTkp = true;
+            var vJmlBarang = 1;
+            var vJml = 0;
+    
+            $("#idInpTglPenjualan").datepicker({
+                minDate: 0, 
+                dateFormat: "MM-dd-yy"
+            }).datepicker("setDate", new Date());
+    
+            $('#idInpNoFaktur').mask('NFK-0000');
+    
+            $.each(vDataBarang, function (i, d) {
+                vStrHtml = vStrHtml + '<tr>' +
+                        '<td>' + d.NamaBarang + '</td>' +
+                        '<td>' + d.harga + '</td>' +
+                        '<td><button type = "button" class="btn btn-primary clBtnTambahBrang" dataBarang='+ JSON.stringify(d) +' > + </button></td>' +
+                    '</tr>';
+    
+    
+            });
+            
+            $('#idTblBodyBarang').append(vStrHtml);
+    
+            $('.clBtnTambahBrang').click(function () {
+                
+                reIndexTable();
+    
+                var vDataBarangDetail = JSON.parse($(this).attr('dataBarang'));
+                var vHargaBarang = vDataBarangDetail.harga;
+                var vStrHtmlTrasaksi = '';
+                
+    
+                $('.clNmBarang').each(function (i, d) {
+                    debugger;
+                    
+                    if (vDataBarangDetail.ID == parseInt($(this).attr('dataID'))) {
+                        vTkp = false;
+                        
+                        vJmlBarang = $(this).parent().parent().find('td input:text.clJmlBarang').val();
+                        vJmlBarang++;
+                        $(this).parent().parent().find('td input:text.clJmlBarang').val(vJmlBarang);
+                        vHargaBarang = vJmlBarang * vHargaBarang;
+                        $(this).parent().parent().find('td input:text.clHargaBarang').val(vHargaBarang);
+                        debugger;
+                    }
+                    vCtr++;
+                });
+                console.log(vCtr);
+                debugger;
+                
+                if (vTkp == false) {
+                    debugger;
+                    
+                    
+                    vCtr = 1;
+                    vTkp = true;
+                } else {
+                    debugger;
+                    vCtr = 0;
+                }
+    
+                if (vCtr == 0) {
+                    debugger;
+                    vJmlBarang = 1;
+                    vStrHtmlTrasaksi = vStrHtmlTrasaksi +
+                        '<tr>' +
+                            '<td>' +
+                                
+                                '<input type="text" class="clNmBarang" dataID="' + vDataBarangDetail.ID + '" value=" ' + vDataBarangDetail.NamaBarang + '" />' +
+                                '<input type="hidden" name="detailTransaction[0].idbarang"  value="' + vDataBarangDetail.ID + '" />' +
+                            '</td>' +
+                            '<td><input type="text" name="detailTransaction[0].jml" class="clJmlBarang" value=" ' + vJmlBarang + '" /></td>' +
+                            '<td><input type="text" class="clHargaBarang" value=" ' + vHargaBarang + '" /></td>' +
+                            '<td><button type = "button" class="btn btn-danger clBtnDeleteBrang"  > - </button></td>' +
+                        '</tr>';
+                    $('#idTblBodyTransaction').append(vStrHtmlTrasaksi);
+    
+                    reIndexTable();
+                }
+                
+    
+                
+    
+    
+                
+    
+                $('.clBtnDeleteBrang').click(function () {
+                    reIndexTable();
+                    debugger;
+                    $(this).parent().parent().remove();
+                });
+    
+            });
+    
+            
+            //Tombol untuk menyimpan data transaksi
+            $('#idBtnSubmitTransaction').click(function () {
+                debugger;
+                // Get data from form
+                var vDataTransaction = $('#idFrmTransaction').serialize();
+                debugger;
+                // Ajax untuk menyimpan Data
+                $.ajax({
+                    url: '/transaction/savetransaction',
+                    data: vDataTransaction,
+                    method: 'Post',
+                    success: function (mdl) {
+                        debugger;
+                        if (mdl.hasil=='berhasil') {
+                            alert('Data berhasil disimpan');
+                        }
+                        else {
+                            alert('Data gagal disimpan');
+                        }
+                    },
+                    error: function (mdl) {
+                        debugger;
+                    }
+                });
+            });
+            
+            //Disini terletak hal yang digunakan untuk melakukan Re-Indexing
+            function reIndexTable() {
+                var rowCount = $('#idTblBodyTransaction tr').length;
+                debugger;
+    
+                if (rowCount > 0) {
+                    var idx = 0;
+                    $.each($("#idTblBodyTransaction").find("tr"), function (i, val) {
+                        //alert(idx);
+                        var vIdBarang = $(this).find(":input[name*='.idbarang']");
+                        $(vIdBarang).attr("name", vIdBarang.attr("name").replace(/\[.*?]\s?/g, "[" + idx + "]"));
+    
+                        var vJml = $(this).find(":input[name*='.jml']");
+                        $(vJml).attr("name", vJml.attr("name").replace(/\[.*?]\s?/g, "[" + idx + "]"));
+    
+    
+                        idx += 1;
+                    });
+                }
+            }
+    
+        });
+    
+    
+    
+    </script>
+    
+</body>
+</html>
